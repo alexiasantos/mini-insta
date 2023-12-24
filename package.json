@@ -1,0 +1,23 @@
+{
+  "name": "aua-escopando-api",
+  "version": "1.0.0",
+  "description": "- Fazer login\r - Fazer cadastro\r - Visualizar dados do seu perfil\r - Editar perfil\r - Visualizar posts de outros\r     - Visualizar comentários em um post\r     - Visualizar quantidade de curtidas\r     - Visualizar usuário verificado ou não em um post\r     - Visualizar data de publicação de um post\r - Curtir posts de outros\r - Comentar nos posts de outros",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
