@@ -35,7 +35,7 @@ const criarPostagem = async (req, res) => {
 }
 
 const curtirPostagem = async (req, res) => {
-    const { postagem_id } = req.body;
+    const { postagem_id } = req.params;
     try {
         const postagemExiste = await knex('postagens').where('id', postagem_id).first();
 
@@ -48,7 +48,7 @@ const curtirPostagem = async (req, res) => {
         if (curtidaExiste) {
             const postagemDescurtida = await knex('postagem_curtidas').del().where('usuario_id', req.usuario.id).andWhere('postagem_id', postagem_id).returning('*');
 
-            return res.status(200).json({ postagem: postagemDescurtida[0], status: "Postagem descurtida!" })
+            return res.status(200).json("Postagem descurtida com sucesso!")
         }
 
         const postagemCurtida = await knex('postagem_curtidas').insert({
@@ -56,7 +56,11 @@ const curtirPostagem = async (req, res) => {
             postagem_id,
             data: new Date()
         }).returning('*');
-        return res.status(200).json({ postagem: postagemCurtida[0], status: "Postagem curtida" })
+
+        if (!postagemCurtida) {
+            return res.status(400).json('Não foi possível curtir essa postagem!')
+        }
+        return res.status(200).json("Postagem curtida com sucesso!")
     } catch (error) {
         return res.status(500).json(error.message);
     }

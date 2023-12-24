@@ -16,6 +16,6 @@ rotas.get('/perfil', usuarios.obterPerfil);
 rotas.put('/perfil', usuarios.atualizarPerfil);
 
 rotas.post('/postagem', criarPostagem)
-rotas.post('/curtidas', curtirPostagem);
+rotas.post('/curtidas/:postagem_id', curtirPostagem);
 rotas.post('/comentar', comentarPostagem)
 module.exports = rotas;
