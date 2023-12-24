@@ -1,23 +1,34 @@
 const knex = require('../conexao');
 
 const criarPostagem = async (req, res) => {
-    const { texto, imagem } = req.body;
-
+    const { texto, imagens } = req.body;
+    if (!imagens || imagens.length === 0) {
+        return res.status(404).json('Ao menos uma imagem precisa ser informada!')
+    }
     try {
         const novaPostagem = await knex('postagens')
             .insert({
                 usuario_id: req.usuario.id,
-                data: new Date(),
                 texto
             }).returning('*');
 
+        if (!novaPostagem) {
+            return res.status(400).json('Não foi possível concluir a postagem');
+        }
 
-        const postagemImagem = await knex('postagem_fotos').insert({
-            postagem_id: novaPostagem[0].id,
-            imagem
-        }).returning('*')
+        for (const imagem of imagens) {
+            imagem.postagem_id = novaPostagem[0].id;
+        }
 
-        return res.status(200).json({ novaPostagem: novaPostagem[0], postagemImagem: postagemImagem[0] })
+        const postagemImagem = await knex('postagem_fotos').insert(
+            imagens).returning('*');
+
+        if (!postagemImagem) {
+            await knex('postagens').where({ id: novaPostagem[0].id }).del();
+            return res.status(400).json('Não foi possível concluir a postagem');
+        }
+
+        return res.status(200).json('Postagem realizada com sucesso!')
     } catch (error) {
         return res.status(400).json(error.message);
     }
