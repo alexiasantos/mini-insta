@@ -68,7 +68,8 @@ const curtirPostagem = async (req, res) => {
 }
 
 const comentarPostagem = async (req, res) => {
-    const { texto, postagem_id } = req.body;
+    const { postagem_id } = req.params;
+    const { texto } = req.body;
     if (texto.trim().length < 1) {
         return res.status(400).json('Texto não pode ser vazio!')
     }
@@ -84,7 +85,11 @@ const comentarPostagem = async (req, res) => {
             usuario_id: req.usuario.id,
             postagem_id
         }).returning('*');
-        return res.status(200).json(postagemComentario)
+
+        if (!postagemComentario) {
+            return res.status(400).json('Não foi possível comentar nessa postagem!')
+        }
+        return res.status(200).json('Postagem comentada com sucesso!')
     } catch (error) {
         return res.status(500).json(error.message);
     }
