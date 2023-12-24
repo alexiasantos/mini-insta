@@ -102,7 +102,7 @@ const atualizarPerfil = async (req, res) => {
             return res.status(400).json('O usuario não foi atualizado');
         }
 
-        return res.status(200).json('Usuario foi atualziado com sucesso');
+        return res.status(200).json('Usuario foi atualizado com sucesso');
     } catch (error) {
         return res.status(500).json(error.message);
     }
